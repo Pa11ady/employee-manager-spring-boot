@@ -1,7 +1,7 @@
 @host = http://localhost:8080
 @basePath = {{host}}/employees
 
-### 1. Создать сотрудника
+### Создать сотруднико 1
 POST {{basePath}}
 Content-Type: application/json
 
@@ -13,23 +13,66 @@ Content-Type: application/json
   "role"  : "MANAGER"
 }
 
-### 2. Получить сотрудника по ID
+### Создать сотруднико 2
+POST {{basePath}}
+Content-Type: application/json
+
+{
+  "name": "Владимир",
+  "surname": "Иванов",
+  "email": "vladimir@example.com",
+  "password": "securePa23",
+  "role"  : "ADMIN"
+}
+
+### Создать сотруднико 3 (Не успех)
+POST {{basePath}}
+Content-Type: application/json
+
+{
+  "name": "Тест",
+  "surname": "Тест",
+  "email": "vladimir@example.com",
+  "password": "securePa23",
+  "role"  : "ADMIN"
+}
+
+
+### Получить сотрудника по ID
 GET {{basePath}}/1
 
-### 3. Получить всех сотрудников
+### Получить сотрудника по ID (Не успех)
+GET {{basePath}}/100500
+
+### Получить всех сотрудников
 GET {{basePath}}
 
-### 4. Обновить сотрудника
+### Обновить сотрудника
 PUT {{basePath}}/1
 Content-Type: application/json
 
 {
   "name": "Иван",
   "surname": "Петровский",
-  "email": "ivan.petrovsky@example.com",
+  "email": "petrovsky@example.com",
   "password": "newSecurePass456",
   "role": "MANAGER"
 }
 
-### 5. Удалить сотрудника (DELETE)
+### Обновить сотрудника (не успех)
+PUT {{basePath}}/1
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "Петровский1",
+  "email": "vladimir@example.com",
+  "password": "newSecurePass456",
+  "role": "MANAGER"
+}
+
+### Удалить сотрудника (DELETE)
+DELETE {{basePath}}/1
+
+### Удалить сотрудника (Не успех)
 DELETE {{basePath}}/1
