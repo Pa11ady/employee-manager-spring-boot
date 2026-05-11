@@ -10,7 +10,7 @@ Content-Type: application/json
   "surname": "Петров",
   "email": "ivan.petrov@example.com",
   "password": "securePass123",
-  "role": "MANAGER"
+  "role"  : "MANAGER"
 }
 
 ### 2. Получить сотрудника по ID
