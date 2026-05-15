@@ -1,7 +1,27 @@
-@host = http://localhost:8080
-@basePath = {{host}}/employees
+### Создать сотрудника (Ошибка 500)
+POST {{basePath}}
+Content-Type: application/json
 
-### Создать сотруднико 1
+{
+  "name": "Иван",
+  "surname": "",
+  "email": "petrov",
+  "password": "securePass123",
+  "role": "ERR"
+}
+
+### Создать сотрудника (ошибка валидации 400)
+POST {{basePath}}
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "",
+  "email": "petrov",
+  "password": "securePass123",
+  "role": "MANAGER"
+}
+### Создать сотрудника 1
 POST {{basePath}}
 Content-Type: application/json
 
@@ -10,10 +30,10 @@ Content-Type: application/json
   "surname": "Петров",
   "email": "ivan.petrov@example.com",
   "password": "securePass123",
-  "role"  : "MANAGER"
+  "role": "MANAGER"
 }
 
-### Создать сотруднико 2
+### Создать сотрудника 2
 POST {{basePath}}
 Content-Type: application/json
 
@@ -22,10 +42,10 @@ Content-Type: application/json
   "surname": "Иванов",
   "email": "vladimir@example.com",
   "password": "securePa23",
-  "role"  : "ADMIN"
+  "role": "ADMIN"
 }
 
-### Создать сотруднико 3 (Не успех)
+### Создать сотрудника 3 (Не успех)
 POST {{basePath}}
 Content-Type: application/json
 
@@ -34,9 +54,8 @@ Content-Type: application/json
   "surname": "Тест",
   "email": "vladimir@example.com",
   "password": "securePa23",
-  "role"  : "ADMIN"
+  "role": "ADMIN"
 }
-
 
 ### Получить сотрудника по ID
 GET {{basePath}}/1
@@ -71,7 +90,7 @@ Content-Type: application/json
   "role": "MANAGER"
 }
 
-### Удалить сотрудника (DELETE)
+### Удалить сотрудника
 DELETE {{basePath}}/1
 
 ### Удалить сотрудника (Не успех)

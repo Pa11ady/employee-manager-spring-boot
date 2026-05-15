@@ -10,10 +10,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Employee {
-    Long id;
-    String name;
-    String surname;
-    String email;
-    String password;
-    Role role;
+    private Long id;
+    private String name;
+    private String surname;
+    private String email;
+    private String password;
+    private Role role;
 }
