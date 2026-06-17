@@ -1,0 +1,97 @@
+### Создать сотрудника (Ошибка 500)
+POST {{basePath}}
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "",
+  "email": "petrov",
+  "password": "securePass123",
+  "role": "ERR"
+}
+
+### Создать сотрудника (ошибка валидации 400)
+POST {{basePath}}
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "",
+  "email": "petrov",
+  "password": "securePass123",
+  "role": "MANAGER"
+}
+### Создать сотрудника 1
+POST {{basePath}}
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "Петров",
+  "email": "ivan.petrov@example.com",
+  "password": "securePass123",
+  "role": "MANAGER"
+}
+
+### Создать сотрудника 2
+POST {{basePath}}
+Content-Type: application/json
+
+{
+  "name": "Владимир",
+  "surname": "Иванов",
+  "email": "vladimir@example.com",
+  "password": "securePa23",
+  "role": "ADMIN"
+}
+
+### Создать сотрудника 3 (Не успех)
+POST {{basePath}}
+Content-Type: application/json
+
+{
+  "name": "Тест",
+  "surname": "Тест",
+  "email": "vladimir@example.com",
+  "password": "securePa23",
+  "role": "ADMIN"
+}
+
+### Получить сотрудника по ID
+GET {{basePath}}/1
+
+### Получить сотрудника по ID (Не успех)
+GET {{basePath}}/100500
+
+### Получить всех сотрудников
+GET {{basePath}}
+
+### Обновить сотрудника
+PUT {{basePath}}/1
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "Петровский",
+  "email": "petrovsky@example.com",
+  "password": "newSecurePass456",
+  "role": "MANAGER"
+}
+
+### Обновить сотрудника (не успех)
+PUT {{basePath}}/1
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "Петровский1",
+  "email": "vladimir@example.com",
+  "password": "newSecurePass456",
+  "role": "MANAGER"
+}
+
+### Удалить сотрудника
+DELETE {{basePath}}/1
+
+### Удалить сотрудника (Не успех)
+DELETE {{basePath}}/1
