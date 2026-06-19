@@ -45,6 +45,19 @@ Content-Type: application/json
   "role": "ADMIN"
 }
 
+### Создать сотрудника 3
+POST {{basePath}}
+Content-Type: application/json
+
+{
+  "name": "Влад",
+  "surname": "Рыбин",
+  "email": "vlad@example.com",
+  "password": "secePa23",
+  "role": "MANAGER"
+}
+
+
 ### Создать сотрудника 3 (Не успех)
 POST {{basePath}}
 Content-Type: application/json
@@ -63,8 +76,24 @@ GET {{basePath}}/1
 ### Получить сотрудника по ID (Не успех)
 GET {{basePath}}/100500
 
+
+### Получить сотрудника фильтр email
+GET {{basePath}}?email=ivan.petrov@example.com
+
+### Получить сотрудника фильтры
+GET {{basePath}}?name=Иван&surname=Петров&email=ivan.petrov@example.com&page=0&size=5&sort=id,asc
+
 ### Получить всех сотрудников
 GET {{basePath}}
+
+### Получить всех сотрудников пагинация 1
+GET {{basePath}}/?page=0&size=2&sort=id
+
+### Получить всех сотрудников пагинация 2
+GET {{basePath}}/?page=1&size=2&sort=id,desc
+
+### Получить всех сотрудников пагинация 3
+GET {{basePath}}/?page=2&size=1
 
 ### Обновить сотрудника
 PUT {{basePath}}/1

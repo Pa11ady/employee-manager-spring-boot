@@ -3,12 +3,13 @@ package ru.practicum.employeemanager.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.employeemanager.dto.EmployeeRequest;
 import ru.practicum.employeemanager.dto.EmployeeResponse;
 import ru.practicum.employeemanager.service.EmployeeService;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -30,9 +31,11 @@ public class EmployeeController {
     }
 
     @GetMapping()
-    public List<EmployeeResponse> getAll() {
+    public Page<EmployeeResponse> getAll(
+            @RequestParam(required = false) String name, @RequestParam(required = false) String surname,
+            @RequestParam(required = false) String email, @PageableDefault(size = 15, sort = "id") Pageable pageable) {
         log.info("Получение всех сотрудников");
-        return employeeService.findAll();
+        return employeeService.findAll(name, surname, email, pageable);
     }
 
     @PutMapping("/{employeeId}")

@@ -1,8 +1,12 @@
 package ru.practicum.employeemanager.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import ru.practicum.employeemanager.dto.EmployeeRequest;
 import ru.practicum.employeemanager.dto.EmployeeResponse;
 import ru.practicum.employeemanager.exception.EmailExistsException;
@@ -10,8 +14,6 @@ import ru.practicum.employeemanager.exception.NotFoundException;
 import ru.practicum.employeemanager.mapper.EmployeeMapper;
 import ru.practicum.employeemanager.model.Employee;
 import ru.practicum.employeemanager.repository.EmployeeRepository;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +40,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<EmployeeResponse> findAll() {
-        return employeeMapper.toResponseList(employeeRepository.findAll());
+    public Page<EmployeeResponse> findAll(String name, String surname, String email, Pageable pageable) {
+        Specification<Employee> spec = Specification.unrestricted();
+        spec = addLike(spec, "name", name);
+        spec = addLike(spec, "surname", surname);
+        spec = addLike(spec, "email", email);
+        Page<Employee> page = employeeRepository.findAll(spec, pageable);
+        return page.map(employeeMapper::toResponse);
+    }
+
+    private Specification<Employee> addLike(Specification<Employee> spec, String field, String value) {
+        if (StringUtils.hasText(value)) {
+            return spec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get(field)), "%" + value.toLowerCase() + "%")
+            );
+        }
+        return spec;
     }
 
     @Override
