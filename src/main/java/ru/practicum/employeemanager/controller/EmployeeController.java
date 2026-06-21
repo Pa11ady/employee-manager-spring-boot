@@ -33,9 +33,10 @@ public class EmployeeController {
     @GetMapping()
     public Page<EmployeeResponse> getAll(
             @RequestParam(required = false) String name, @RequestParam(required = false) String surname,
-            @RequestParam(required = false) String email, @PageableDefault(size = 15, sort = "id") Pageable pageable) {
+            @RequestParam(required = false) String email, @RequestParam(required = false) String phone,
+            @PageableDefault(sort = "name") Pageable pageable) {
         log.info("Получение всех сотрудников");
-        return employeeService.findAll(name, surname, email, pageable);
+        return employeeService.findAll(name, surname, email, phone, pageable);
     }
 
     @PutMapping("/{employeeId}")

@@ -1,9 +1,8 @@
 package ru.practicum.employeemanager.dto;
 
 import jakarta.validation.constraints.*;
-import ru.practicum.employeemanager.model.Role;
 
-public record EmployeeRequest(
+public record CustomerRequest(
         @NotBlank
         @Size(min = 1, max = 100)
         String name,
@@ -17,17 +16,10 @@ public record EmployeeRequest(
         @Size(max = 100)
         String email,
 
-        //Допустим, что телефона может не быть
+        @NotBlank
         @Pattern(regexp = "\\+?[0-9]+",
                 message = "Номер должен содержать только цифры и ведущий '+'")
         @Size(max = 30)
-        String phone,
-
-        @NotBlank
-        @Size(min = 6, max = 64)
-        String password,
-
-        @NotNull
-        Role role
+        String phone
 ) {
 }

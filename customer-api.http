@@ -1,0 +1,164 @@
+### Создать клиента (Ошибка валидации 400 - пустое имя)
+POST {{customersPath}}
+Content-Type: application/json
+
+{
+  "name": "",
+  "surname": "Смирнов",
+  "email": "smirnov@example.com",
+  "phone": "+79111234567"
+}
+
+### Создать клиента (Ошибка валидации 400 - некорректный email)
+POST {{customersPath}}
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "Смирнов",
+  "email": "smirnov",
+  "phone": "+79111234567"
+}
+
+### Создать клиента (Ошибка валидации 400 - телефон длиннее 30 символов)
+POST {{customersPath}}
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "Смирнов",
+  "email": "smirnov@example.com",
+  "phone": "+7911123456712345678901234567890"
+}
+
+### Создать клиента 1
+POST {{customersPath}}
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "Котов",
+  "email": "ivan.cat@mail.ru",
+  "phone": "+79111234567"
+}
+
+### Создать клиента 2
+POST {{customersPath}}
+Content-Type: application/json
+
+{
+  "name": "Анна",
+  "surname": "Кузнецова",
+  "email": "anna.kuznetsova@gmail.com",
+  "phone": "+79122345678"
+}
+
+### Создать клиента 3
+POST {{customersPath}}
+Content-Type: application/json
+
+{
+  "name": "Пётр",
+  "surname": "Попов",
+  "email": "petr.popov@yandex.ru",
+  "phone": "+79133456789"
+}
+
+### Создать клиента 4 (без телефона - ошибка, т.к. NOT NULL)
+POST {{customersPath}}
+Content-Type: application/json
+
+{
+  "name": "Тест",
+  "surname": "Тестов",
+  "email": "test@example.com"
+}
+
+### Создать клиента (Не успех - дубликат email)
+POST {{customersPath}}
+Content-Type: application/json
+
+{
+  "name": "Другой",
+  "surname": "Человек",
+  "email": "ivan.smirnov@mail.ru",
+  "phone": "+79999999999"
+}
+
+### Получить клиента по ID (с заказами)
+GET {{customersPath}}/1
+
+### Получить клиента по ID (Не успех - не найден)
+GET {{customersPath}}/100500
+
+### Получить клиента фильтр по имени
+GET {{customersPath}}?name=Иван
+
+### Получить клиента фильтр по фамилии
+GET {{customersPath}}?surname=Кузнецова
+
+### Получить клиента фильтр по email
+GET {{customersPath}}?email=anna.kuznetsova@gmail.com
+
+### Получить клиента фильтр по телефону
+GET {{customersPath}}?phone=7913
+
+### Получить клиентов с несколькими фильтрами
+GET {{customersPath}}?name=Иван&surname=Смирнов&email=ivan.smirnov@mail.ru&page=0&size=5&sort=id,asc
+
+### Получить всех клиентов
+GET {{customersPath}}
+
+### Получить всех клиентов пагинация 1
+GET {{customersPath}}/?page=0&size=2&sort=id
+
+### Получить всех клиентов пагинация 2
+GET {{customersPath}}/?page=1&size=2&sort=id,desc
+
+### Получить всех клиентов пагинация 3
+GET {{customersPath}}/?page=2&size=1
+
+### Получить всех клиентов сортировка по email
+GET {{customersPath}}/?sort=email,asc
+
+### Обновить клиента
+PUT {{customersPath}}/1
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "Смирнов-Петров",
+  "email": "ivan.smirnov-new@mail.ru",
+  "phone": "+79119998877"
+}
+
+### Обновить клиента (не успех - email уже занят)
+PUT {{customersPath}}/1
+Content-Type: application/json
+
+{
+  "name": "Иван",
+  "surname": "Смирнов",
+  "email": "anna.kuznetsova@gmail.com",
+  "phone": "+79111234567"
+}
+
+### Обновить клиента (не найден)
+PUT {{customersPath}}/100500
+Content-Type: application/json
+
+{
+  "name": "Тест",
+  "surname": "Тестов",
+  "email": "test-new@example.com",
+  "phone": "+79000000000"
+}
+
+### Удалить клиента
+DELETE {{customersPath}}/3
+
+### Удалить клиента (не найден)
+DELETE {{customersPath}}/100500
+
+### Удалить клиента с заказами (может вернуть ошибку из-за FK constraint)
+DELETE {{customersPath}}/1

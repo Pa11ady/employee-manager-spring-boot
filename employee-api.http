@@ -1,17 +1,18 @@
 ### Создать сотрудника (Ошибка 500)
-POST {{basePath}}
+POST {{employeesPath}}
 Content-Type: application/json
 
 {
   "name": "Иван",
   "surname": "",
   "email": "petrov",
+  "phone": "6540845",
   "password": "securePass123",
   "role": "ERR"
 }
 
 ### Создать сотрудника (ошибка валидации 400)
-POST {{basePath}}
+POST {{employeesPath}}
 Content-Type: application/json
 
 {
@@ -22,19 +23,20 @@ Content-Type: application/json
   "role": "MANAGER"
 }
 ### Создать сотрудника 1
-POST {{basePath}}
+POST {{employeesPath}}
 Content-Type: application/json
 
 {
   "name": "Иван",
   "surname": "Петров",
-  "email": "ivan.petrov@example.com",
+  "email": "IvanPetrov@example.com",
   "password": "securePass123",
+  "phone": "6540845",
   "role": "MANAGER"
 }
 
 ### Создать сотрудника 2
-POST {{basePath}}
+POST {{employeesPath}}
 Content-Type: application/json
 
 {
@@ -46,20 +48,21 @@ Content-Type: application/json
 }
 
 ### Создать сотрудника 3
-POST {{basePath}}
+POST {{employeesPath}}
 Content-Type: application/json
 
 {
   "name": "Влад",
   "surname": "Рыбин",
   "email": "vlad@example.com",
+  "phone": "12345",
   "password": "secePa23",
   "role": "MANAGER"
 }
 
 
 ### Создать сотрудника 3 (Не успех)
-POST {{basePath}}
+POST {{employeesPath}}
 Content-Type: application/json
 
 {
@@ -71,44 +74,46 @@ Content-Type: application/json
 }
 
 ### Получить сотрудника по ID
-GET {{basePath}}/1
+GET {{employeesPath}}/1
 
 ### Получить сотрудника по ID (Не успех)
-GET {{basePath}}/100500
+GET {{employeesPath}}/100500
 
+### Получить сотрудника фильтр телефон
+GET {{employeesPath}}?phone=12345
 
 ### Получить сотрудника фильтр email
-GET {{basePath}}?email=ivan.petrov@example.com
+GET {{employeesPath}}?email=ivan.petrov@example.com
 
 ### Получить сотрудника фильтры
-GET {{basePath}}?name=Иван&surname=Петров&email=ivan.petrov@example.com&page=0&size=5&sort=id,asc
+GET {{employeesPath}}?name=Иван&surname=Петров&email=ivan.petrov@example.com&page=0&size=5&sort=id,asc
 
 ### Получить всех сотрудников
-GET {{basePath}}
+GET {{employeesPath}}
 
 ### Получить всех сотрудников пагинация 1
-GET {{basePath}}/?page=0&size=2&sort=id
+GET {{employeesPath}}/?page=0&size=2&sort=id
 
 ### Получить всех сотрудников пагинация 2
-GET {{basePath}}/?page=1&size=2&sort=id,desc
+GET {{employeesPath}}/?page=1&size=2&sort=id,desc
 
 ### Получить всех сотрудников пагинация 3
-GET {{basePath}}/?page=2&size=1
+GET {{employeesPath}}/?page=2&size=1
 
 ### Обновить сотрудника
-PUT {{basePath}}/1
+PUT {{employeesPath}}/1
 Content-Type: application/json
 
 {
   "name": "Иван",
   "surname": "Петровский",
-  "email": "petrovsky@example.com",
+  "email": "petrovskY@example.com",
   "password": "newSecurePass456",
   "role": "MANAGER"
 }
 
 ### Обновить сотрудника (не успех)
-PUT {{basePath}}/1
+PUT {{employeesPath}}/1
 Content-Type: application/json
 
 {
@@ -120,7 +125,7 @@ Content-Type: application/json
 }
 
 ### Удалить сотрудника
-DELETE {{basePath}}/1
+DELETE {{employeesPath}}/1
 
 ### Удалить сотрудника (Не успех)
-DELETE {{basePath}}/1
+DELETE {{employeesPath}}/1

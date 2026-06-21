@@ -10,7 +10,7 @@ public interface EmployeeService {
 
     EmployeeResponse findById(long id);
 
-    Page<EmployeeResponse> findAll(String name, String surname, String email, Pageable pageable);
+    Page<EmployeeResponse> findAll(String name, String surname, String email, String phone, Pageable pageable);
 
     EmployeeResponse update(long id, EmployeeRequest employeeRequest);
 

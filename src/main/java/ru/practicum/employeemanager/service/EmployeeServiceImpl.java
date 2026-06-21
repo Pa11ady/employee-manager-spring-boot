@@ -40,11 +40,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<EmployeeResponse> findAll(String name, String surname, String email, Pageable pageable) {
+    public Page<EmployeeResponse> findAll(String name, String surname, String email,  String phone, Pageable pageable) {
         Specification<Employee> spec = Specification.unrestricted();
         spec = addLike(spec, "name", name);
         spec = addLike(spec, "surname", surname);
         spec = addLike(spec, "email", email);
+        spec = addLike(spec, "phone", phone);
         Page<Employee> page = employeeRepository.findAll(spec, pageable);
         return page.map(employeeMapper::toResponse);
     }
