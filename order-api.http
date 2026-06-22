@@ -1,0 +1,176 @@
+### Создать заказ (Успех)
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "NEW",
+  "customerId": 1
+}
+
+### Создать заказ 2
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "PROCESSING",
+  "customerId": 1
+}
+
+### Создать заказ 3
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "COMPLETED",
+  "customerId": 2
+}
+
+### Создать заказ 4
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "CANCELED",
+  "customerId": 2
+}
+
+### Создать заказ (ошибка валидации 400) — не указан status
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "customerId": 1
+}
+
+### Создать заказ (ошибка валидации 400) — не указан customerId
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "NEW"
+}
+
+### Создать заказ (ошибка 400) — некорректный статус
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "UNKNOWN_STATUS",
+  "customerId": 1
+}
+
+### Создать заказ (ошибка 500) — клиент не существует
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "NEW",
+  "customerId": 100500
+}
+
+### Получить заказ по ID
+GET {{ordersPath}}/1
+
+### Получить заказ по ID (Не успех)
+GET {{ordersPath}}/100500
+
+### Получить все заказы
+GET {{ordersPath}}
+
+### Получить заказы фильтр по статусу NEW
+GET {{ordersPath}}?status=NEW
+
+### Получить заказы фильтр по статусу PROCESSING
+GET {{ordersPath}}?status=PROCESSING
+
+### Получить заказы фильтр по статусу COMPLETED
+GET {{ordersPath}}?status=COMPLETED
+
+### Получить заказы фильтр по статусу CANCELED
+GET {{ordersPath}}?status=CANCELED
+
+### Получить заказы фильтр по дате (весь день в UTC)
+GET {{ordersPath}}?createdAt=2026-06-22T14:32:07Z
+
+### Получить заказы фильтры + пагинация
+GET {{ordersPath}}?status=NEW&createdAt=2026-06-22T00:00:00Z&page=0&size=5&sort=id,asc
+
+### Получить все заказы пагинация 1
+GET {{ordersPath}}/?page=0&size=2&sort=id
+
+### Получить все заказы пагинация 2
+GET {{ordersPath}}/?page=1&size=2&sort=id,desc
+
+### Получить все заказы пагинация 3
+GET {{ordersPath}}/?page=2&size=1
+
+### Получить все заказы сортировка по дате создания
+GET {{ordersPath}}/?sort=createdAt,desc
+
+### Обновить заказ (сменить статус на PROCESSING)
+PUT {{ordersPath}}/1
+Content-Type: application/json
+
+{
+  "status": "PROCESSING",
+  "customerId": 1
+}
+
+### Обновить заказ (сменить статус на COMPLETED)
+PUT {{ordersPath}}/1
+Content-Type: application/json
+
+{
+  "status": "COMPLETED",
+  "customerId": 1
+}
+
+### Обновить заказ (сменить статус на CANCELED)
+PUT {{ordersPath}}/2
+Content-Type: application/json
+
+{
+  "status": "CANCELED",
+  "customerId": 1
+}
+
+### Обновить заказ (изменить клиента)
+PUT {{ordersPath}}/3
+Content-Type: application/json
+
+{
+  "status": "NEW",
+  "customerId": 2
+}
+
+### Обновить заказ (Не успех) — заказ не существует
+PUT {{ordersPath}}/100500
+Content-Type: application/json
+
+{
+  "status": "NEW",
+  "customerId": 1
+}
+
+### Обновить заказ (ошибка валидации 400) — не указан status
+PUT {{ordersPath}}/1
+Content-Type: application/json
+
+{
+  "customerId": 1
+}
+
+### Обновить заказ (ошибка 400) — некорректный статус
+PUT {{ordersPath}}/1
+Content-Type: application/json
+
+{
+  "status": "INVALID",
+  "customerId": 1
+}
+
+### Удалить заказ
+DELETE {{ordersPath}}/1
+
+### Удалить заказ (Не успех) — уже удалён или не существовал
+DELETE {{ordersPath}}/1

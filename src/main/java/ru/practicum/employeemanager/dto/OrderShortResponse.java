@@ -4,7 +4,7 @@ import ru.practicum.employeemanager.model.Status;
 
 import java.time.Instant;
 
-public record OrderShorResponse(
+public record OrderShortResponse(
         Long id,
         Instant createdAt,
         Status status

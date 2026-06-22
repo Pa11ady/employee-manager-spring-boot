@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS orders
     status      VARCHAR(30),
     customer_id BIGINT,
     CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers (customer_id)
+        ON DELETE SET NULL
 );
 CREATE INDEX idx_orders_customer_id ON orders (customer_id);
 
@@ -58,13 +59,13 @@ VALUES
 ('2026-02-20 14:45:00+03', 'COMPLETED', 1),
 
 -- Анна Кузнецова
-('2026-03-10 09:15:00+03', 'IN_PROGRESS', 2),
+('2026-03-10 09:15:00+03', 'PROCESSING', 2),
 
 -- Пётр Попов
 ('2026-04-05 16:20:00+03', 'NEW', 3),
 ('2026-05-18 10:00:00+03', 'CANCELLED', 3),
 
 -- Светлана Васильева
-('2026-06-01 14:15:00+03', 'IN_PROGRESS', 4);
+('2026-06-01 14:15:00+03', 'PROCESSING', 4);
 
 -- Михаил Зайцев 0 заказов

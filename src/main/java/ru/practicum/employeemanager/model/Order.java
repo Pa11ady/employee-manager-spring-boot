@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 @Setter
@@ -30,14 +31,18 @@ public class Order {
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id",
+            foreignKey = @ForeignKey(name = "fk_orders_customer_id",
+                    foreignKeyDefinition = "FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE SET NULL"))
+    //Влияет только если генерация через Hibernate
+
     private Customer customer;
 
     // Автоматическое заполнение при создании
     @PrePersist
     void onCreate() {
         if (createdAt == null) {
-            createdAt = Instant.now();
+            createdAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         }
     }
 }

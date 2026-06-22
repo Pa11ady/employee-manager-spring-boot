@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public record CustomerWithOrdersResponse(Long id, String name, String surname, String email, String phone,
-                                         List<OrderShorResponse> orders) {
+                                         List<OrderShortResponse> orders) {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof CustomerWithOrdersResponse that)) return false;
