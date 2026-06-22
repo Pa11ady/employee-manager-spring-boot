@@ -10,6 +10,7 @@ import ru.practicum.employeemanager.model.Customer;
 public interface CustomerMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "orders", ignore = true)
     Customer toEntity(CustomerRequest request);
 
     CustomerResponse toResponse(Customer employee);
@@ -17,6 +18,7 @@ public interface CustomerMapper {
     CustomerWithOrdersResponse toResponseFull(Customer employee);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "orders", ignore = true)
     void updateEntityFromRequest(CustomerRequest request, @MappingTarget Customer customer);
 
     //List<CustomerResponse> toResponseList(List<Customer> customers);

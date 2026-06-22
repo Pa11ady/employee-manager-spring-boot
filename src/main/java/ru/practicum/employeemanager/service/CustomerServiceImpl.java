@@ -35,7 +35,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional(readOnly = true)
     public CustomerWithOrdersResponse findById(long id) {
-        Customer customer = getCustomer(id);
+        Customer customer = customerRepository.findByIdWithOrders(id)
+                .orElseThrow(() -> new NotFoundException("Клиент не найден: " + id));
         return customerMapper.toResponseFull(customer);
     }
 
@@ -70,7 +71,12 @@ public class CustomerServiceImpl implements CustomerService {
             throw new EmailExistsException((customerRequest.email() + " существует"));
         }
         customerMapper.updateEntityFromRequest(customerRequest, customer);
-        return customerMapper.toResponse(customerRepository.save(customer));
+        //return customerMapper.toResponse(customerRepository.save(customer));
+        // Объект customer находится в persistence context (managed),
+        // поэтому вызов save() привёл бы к лишнему merge() без реального эффекта.
+        // Hibernate сам выполнит UPDATE при flush в конце транзакции.
+        //managed + @Transactional => save() не требуется
+        return customerMapper.toResponse(customer);
     }
 
     private Customer getCustomer(long id) {

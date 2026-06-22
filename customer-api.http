@@ -47,9 +47,9 @@ POST {{customersPath}}
 Content-Type: application/json
 
 {
-  "name": "Анна",
-  "surname": "Кузнецова",
-  "email": "anna.kuznetsova@gmail.com",
+  "name": "Яна",
+  "surname": "Козлова",
+  "email": "kozlina@gmail.com",
   "phone": "+79122345678"
 }
 
@@ -58,9 +58,9 @@ POST {{customersPath}}
 Content-Type: application/json
 
 {
-  "name": "Пётр",
-  "surname": "Попов",
-  "email": "petr.popov@yandex.ru",
+  "name": "Алексей",
+  "surname": "Деревов",
+  "email": "alexv@yandex.ru",
   "phone": "+79133456789"
 }
 
@@ -87,6 +87,9 @@ Content-Type: application/json
 
 ### Получить клиента по ID (с заказами)
 GET {{customersPath}}/1
+
+### Получить клиента по ID (без заказов)
+GET {{customersPath}}/5
 
 ### Получить клиента по ID (Не успех - не найден)
 GET {{customersPath}}/100500
@@ -155,7 +158,7 @@ Content-Type: application/json
 }
 
 ### Удалить клиента
-DELETE {{customersPath}}/3
+DELETE {{customersPath}}/5
 
 ### Удалить клиента (не найден)
 DELETE {{customersPath}}/100500

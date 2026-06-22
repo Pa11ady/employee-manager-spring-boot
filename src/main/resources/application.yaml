@@ -13,7 +13,7 @@ spring:
       mode: always
 
   jpa:
-    show-sql: true
+    #show-sql: true
     hibernate:
       #ddl-auto: none
       ddl-auto: validate
@@ -28,4 +28,4 @@ spring:
 logging:
   level:
     org.hibernate.orm.jdbc.bind: TRACE
-    #org.hibernate: DEBUG
+    org.hibernate.SQL: DEBUG

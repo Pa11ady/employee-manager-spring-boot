@@ -69,6 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new EmailExistsException((employeeRequest.email() + " существует"));
         }
         employeeMapper.updateEntityFromRequest(employeeRequest, employee);
+        //save необязательно, но так делают для спокойствия
         return employeeMapper.toResponse(employeeRepository.save(employee));
     }
 
