@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import ru.practicum.employeemanager.dto.OrderRequest;
 import ru.practicum.employeemanager.dto.OrderResponse;
 import ru.practicum.employeemanager.dto.OrderWithCustomerResponse;
@@ -19,6 +18,7 @@ import ru.practicum.employeemanager.repository.CustomerRepository;
 import ru.practicum.employeemanager.repository.OrderRepository;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -54,19 +54,25 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     public Page<OrderResponse> findAll(Status status, Instant createdAt, Pageable pageable) {
         Specification<Order> spec = Specification.unrestricted();
-        spec = addLike(spec, "status", status != null ? status.name() : null);
-        spec = addLike(spec, "createdAt", createdAt != null ? createdAt.toString() : null);
-        Page<Order> page = orderRepository.findAll(spec, pageable);
-        return page.map(orderMapper::toResponse);
-    }
 
-    private Specification<Order> addLike(Specification<Order> spec, String field, String value) {
-        if (StringUtils.hasText(value)) {
-            return spec.and((root, query, cb) ->
-                    cb.like(cb.lower(root.get(field)), "%" + value.toLowerCase() + "%")
+        if (status != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("status"), status));
+        }
+
+        if (createdAt != null) {
+            // Полуоткрытый интервал [start, end) - включая start, исключая end
+            Instant start = createdAt.truncatedTo(ChronoUnit.SECONDS);
+            Instant end = start.plusSeconds(1);
+            spec = spec.and((root, query, cb) ->
+                    cb.and(
+                            cb.greaterThanOrEqualTo(root.get("createdAt"), start),
+                            cb.lessThan(root.get("createdAt"), end)
+                    )
             );
         }
-        return spec;
+
+        Page<Order> page = orderRepository.findAll(spec, pageable);
+        return page.map(orderMapper::toResponse);
     }
 
     @Override

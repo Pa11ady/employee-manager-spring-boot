@@ -128,4 +128,4 @@ Content-Type: application/json
 DELETE {{employeesPath}}/1
 
 ### Удалить сотрудника (Не успех)
-DELETE {{employeesPath}}/1
+DELETE {{employeesPath}}/10500

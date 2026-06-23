@@ -16,6 +16,7 @@ public interface OrderMapper {
     @Mapping(target = "createdAt", ignore = true)
     Order toEntity(OrderRequest request);
 
+    @Mapping(target = "customerId", source = "customer.id")
     OrderResponse toResponse(Order order);
 
     OrderWithCustomerResponse toResponseFull(Order order);

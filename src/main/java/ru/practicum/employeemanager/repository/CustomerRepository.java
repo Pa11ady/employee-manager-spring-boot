@@ -10,7 +10,10 @@ import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
 
-    Optional<Long> findIdByEmail(String email);
+    //Optional<Long> findCustomerIdByEmail(String email); то работает то нет, магия кеша
+
+    @Query("SELECT c.id from Customer c WHERE  c.email = :email")
+    Optional<Long> findIdByEmail(@Param(("email")) String email);
 
     boolean existsByEmail(String email);
 

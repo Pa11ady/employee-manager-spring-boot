@@ -59,7 +59,7 @@ Content-Type: application/json
   "customerId": 1
 }
 
-### Создать заказ (ошибка 500) — клиент не существует
+### Создать заказ (ошибка 404) — клиент не существует
 POST {{ordersPath}}
 Content-Type: application/json
 
@@ -89,11 +89,11 @@ GET {{ordersPath}}?status=COMPLETED
 ### Получить заказы фильтр по статусу CANCELED
 GET {{ordersPath}}?status=CANCELED
 
-### Получить заказы фильтр по дате (весь день в UTC)
-GET {{ordersPath}}?createdAt=2026-06-22T14:32:07Z
+### Получить заказы фильтр по дате в UTC
+GET {{ordersPath}}?createdAt=2026-01-15T10:30:00Z
 
 ### Получить заказы фильтры + пагинация
-GET {{ordersPath}}?status=NEW&createdAt=2026-06-22T00:00:00Z&page=0&size=5&sort=id,asc
+GET {{ordersPath}}?status=NEW&createdAt=2026-01-15T10:30:00Z&page=0&size=5&sort=id,asc
 
 ### Получить все заказы пагинация 1
 GET {{ordersPath}}/?page=0&size=2&sort=id
@@ -140,7 +140,7 @@ Content-Type: application/json
 
 {
   "status": "NEW",
-  "customerId": 2
+  "customerId": 3
 }
 
 ### Обновить заказ (Не успех) — заказ не существует
