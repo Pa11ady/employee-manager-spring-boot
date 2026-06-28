@@ -3,9 +3,13 @@ package ru.practicum.employeemanager.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,8 +39,17 @@ public class Order {
             foreignKey = @ForeignKey(name = "fk_orders_customer_id",
                     foreignKeyDefinition = "FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE SET NULL"))
     //Влияет только если генерация через Hibernate
-
     private Customer customer;
+
+    @OneToMany(
+            mappedBy = "order",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    @OnDelete(action = OnDeleteAction.CASCADE) // Каскадное удаление на уровне базы, чтобы избежать n+1
+    private List<OrderItem> items = new ArrayList<>();
+
 
     // Автоматическое заполнение при создании
     @PrePersist

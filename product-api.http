@@ -1,0 +1,198 @@
+### Создать товар (Ошибка валидации 400 - пустое название)
+POST {{productsPath}}
+Content-Type: application/json
+
+{
+  "name": "",
+  "description": "Описание товара",
+  "price": 999.99
+}
+
+### Создать товар (Ошибка валидации 400 - название длиннее 255 символов)
+POST {{productsPath}}
+Content-Type: application/json
+
+{
+  "name": "Очень_длинное_название_товара_которое_превышает_допустимую_длину_в_255_символов_и_должно_вызвать_ошибку_валидации_потому_что_мы_проверяем_максимальную_длину_поля_name_в_нашем_API_для_товаров_и_это_название_действительно_очень_длинное_чтобы_проверить_работу_валидации",
+  "description": "Описание",
+  "price": 999.99
+}
+
+### Создать товар (Ошибка валидации 400 - цена null)
+POST {{productsPath}}
+Content-Type: application/json
+
+{
+  "name": "Товар без цены",
+  "description": "Описание"
+}
+
+### Создать товар (Ошибка валидации 400 - цена меньше 0)
+POST {{productsPath}}
+Content-Type: application/json
+
+{
+  "name": "Дешёвый товар",
+  "description": "Описание",
+  "price": 0.00
+}
+
+### Создать товар (Ошибка валидации 400 - отрицательная цена)
+POST {{productsPath}}
+Content-Type: application/json
+
+{
+  "name": "Товар с долгом",
+  "description": "Описание",
+  "price": -100.00
+}
+
+### Создать товар (Ошибка валидации 400 - некорректный формат JSON)
+POST {{productsPath}}
+Content-Type: application/json
+
+{
+  "name": "Товар",
+  "description": "Описание",
+  "price": "не число"
+}
+
+### Создать товар 1
+POST {{productsPath}}
+Content-Type: application/json
+
+{
+  "name": "iPhone 15 Pro",
+  "description": "Смартфон Apple с чипом A17 Pro",
+  "price": 99999.50
+}
+
+### Создать товар 2
+POST {{productsPath}}
+Content-Type: application/json
+
+{
+  "name": "MacBook",
+  "description": "Ноутбук Apple с процессором M2",
+  "price": 129999.99
+}
+
+### Создать товар 3
+POST {{productsPath}}
+Content-Type: application/json
+
+{
+  "name": "AirPods Pro",
+  "description": "Беспроводные наушники с шумоподавлением",
+  "price": 24999.99
+}
+
+### Создать товар 5 (без описания - допустимо)
+POST {{productsPath}}
+Content-Type: application/json
+
+{
+  "name": "Apple Watch Series 9",
+  "price": 39999.99
+}
+
+### Создать товар (Не успех - дубликат названия)
+POST {{productsPath}}
+Content-Type: application/json
+
+{
+  "name": "iPhone 15 Pro",
+  "description": "Другое описание",
+  "price": 89999.99
+}
+
+### Получить товар по ID (успех)
+GET {{productsPath}}/1
+
+### Получить товар по ID (без описания)
+GET {{productsPath}}/5
+
+### Получить товар по ID (Не успех - не найден)
+GET {{productsPath}}/100500
+
+### Получить товары фильтр по имени
+GET {{productsPath}}?name=iPhone
+
+### Получить товары фильтр по минимальной цене
+GET {{productsPath}}?minPrice=50000
+
+### Получить товары фильтр по максимальной цене
+GET {{productsPath}}?maxPrice=30000
+
+### Получить товары фильтр по диапазону цен
+GET {{productsPath}}?minPrice=20000&maxPrice=100000
+
+### Получить товары с несколькими фильтрами
+GET {{productsPath}}?minPrice=30000&maxPrice=150000&page=0&size=5&sort=name,asc
+
+### Получить все товары
+GET {{productsPath}}
+
+### Получить все товары пагинация 1
+GET {{productsPath}}/?page=0&size=2&sort=name
+
+### Получить все товары пагинация 2
+GET {{productsPath}}/?page=1&size=2&sort=price,desc
+
+### Получить все товары пагинация 3
+GET {{productsPath}}/?page=2&size=1
+
+### Получить все товары сортировка по цене (возрастание)
+GET {{productsPath}}/?sort=price,asc
+
+### Получить все товары сортировка по нескольким полям
+GET {{productsPath}}/?sort=name,asc&sort=price,desc
+
+### Обновить товар
+PUT {{productsPath}}/1
+Content-Type: application/json
+
+{
+  "name": "iPhone 15 Pro Max",
+  "description": "Флагманский смартфон Apple с чипом A17 Pro и увеличенным экраном",
+  "price": 119999.99
+}
+
+### Обновить товар (изменить только цену)
+PUT {{productsPath}}/2
+Content-Type: application/json
+
+{
+  "name": "MacBook Air M2",
+  "description": "Ноутбук Apple с процессором M2",
+  "price": 119999.99
+}
+
+### Обновить товар (не успех - дубликат названия)
+PUT {{productsPath}}/1
+Content-Type: application/json
+
+{
+  "name": "MacBook Air M2",
+  "description": "Новое описание",
+  "price": 99999.99
+}
+
+### Обновить товар (не найден)
+PUT {{productsPath}}/100500
+Content-Type: application/json
+
+{
+  "name": "Новый товар",
+  "description": "Описание",
+  "price": 999.99
+}
+
+### Удалить товар
+DELETE {{productsPath}}/5
+
+### Удалить товар (не найден)
+DELETE {{productsPath}}/100500
+
+### Удалить товар, который есть в заказах (может вернуть ошибку из-за FK constraint)
+DELETE {{productsPath}}/1

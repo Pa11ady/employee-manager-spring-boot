@@ -1,5 +1,6 @@
 package ru.practicum.employeemanager.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -44,5 +45,18 @@ public class GlobalExceptionHandler {
                 "Некорректный формат запроса. Проверьте типы данных.",
                 LocalDateTime.now()
         );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleDataIntegrityViolation(DataIntegrityViolationException e) {
+        String message = e.getMostSpecificCause().getMessage();
+        if (message.contains("uc_product_name")) {
+            return new ErrorResponse(
+                    HttpStatus.CONFLICT.value(), "Название товара уже существует",
+                    LocalDateTime.now()
+            );
+        }
+        throw e;
     }
 }
