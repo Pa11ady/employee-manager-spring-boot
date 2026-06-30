@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.employeemanager.dto.OrderFullResponse;
 import ru.practicum.employeemanager.dto.OrderRequest;
 import ru.practicum.employeemanager.dto.OrderResponse;
-import ru.practicum.employeemanager.dto.OrderWithCustomerResponse;
 import ru.practicum.employeemanager.exception.NotFoundException;
 import ru.practicum.employeemanager.mapper.OrderMapper;
 import ru.practicum.employeemanager.model.Customer;
@@ -44,8 +44,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public OrderWithCustomerResponse findById(long id) {
-        Order order = orderRepository.findByIdWithCustomer(id)
+    public OrderFullResponse findById(long id) {
+        Order order = orderRepository.findByIdWithDetails(id)
                 .orElseThrow(() -> new NotFoundException("Заказ не найден: " + id));
         return orderMapper.toResponseFull(order);
     }

@@ -56,6 +56,11 @@ public class GlobalExceptionHandler {
                     HttpStatus.CONFLICT.value(), "Название товара уже существует",
                     LocalDateTime.now()
             );
+        } else if (message.contains("uc_order_product")) {
+            return new ErrorResponse(
+                    HttpStatus.CONFLICT.value(), "Товар уже существует в заказе",
+                    LocalDateTime.now()
+            );
         }
         throw e;
     }

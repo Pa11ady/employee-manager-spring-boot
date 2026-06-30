@@ -1,5 +1,6 @@
 package ru.practicum.employeemanager.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +10,7 @@ import ru.practicum.employeemanager.model.Order;
 import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
-    @Query("SELECT o FROM  Order o LEFT JOIN FETCH o.customer WHERE o.id = :id")
-    Optional<Order> findByIdWithCustomer(@Param("id") long id);
+    @EntityGraph(attributePaths = {"customer", "items", "items.product"})
+    @Query("SELECT o FROM  Order o WHERE o.id = :id")
+    Optional<Order> findByIdWithDetails(@Param("id") long id);
 }

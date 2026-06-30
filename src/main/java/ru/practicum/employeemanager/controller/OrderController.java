@@ -7,10 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.employeemanager.dto.OrderRequest;
-import ru.practicum.employeemanager.dto.OrderResponse;
-import ru.practicum.employeemanager.dto.OrderWithCustomerResponse;
+import ru.practicum.employeemanager.dto.*;
 import ru.practicum.employeemanager.model.Status;
+import ru.practicum.employeemanager.service.OrderItemService;
 import ru.practicum.employeemanager.service.OrderService;
 
 import java.time.Instant;
@@ -22,6 +21,7 @@ import java.time.Instant;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderItemService orderItemService;
 
     @PostMapping
     public OrderResponse create(@Valid @RequestBody OrderRequest orderRequest) {
@@ -30,7 +30,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public OrderWithCustomerResponse get(@PathVariable long orderId) {
+    public OrderFullResponse get(@PathVariable long orderId) {
         log.info("Получение заказа по id {}", orderId);
         return orderService.findById(orderId);
     }
@@ -54,5 +54,25 @@ public class OrderController {
     public void delete(@PathVariable long orderId) {
         log.info("Удаление заказа по id {}", orderId);
         orderService.delete(orderId);
+    }
+
+    @PostMapping("/{orderId}/items")
+    public OrderItemResponse addItem(@PathVariable long orderId,
+                                     @Valid @RequestBody OrderItemRequest orderItemRequest) {
+        log.info("Добавление товара {} {}", orderId, orderItemRequest);
+        return orderItemService.create(orderId, orderItemRequest);
+    }
+
+    @PutMapping("/{orderId}/items/{itemId}")
+    public OrderItemResponse updateItem(@PathVariable long orderId, @PathVariable long itemId,
+                                        @Valid @RequestBody OrderItemRequest orderItemRequest) {
+        log.info("Обновление товара {} {}", itemId, orderItemRequest);
+        return orderItemService.update(orderId, itemId, orderItemRequest);
+    }
+
+    @DeleteMapping("/{orderId}/items/{itemId}")
+    public void deleteItem(@PathVariable long orderId, @PathVariable long itemId) {
+        log.info("Удаление товара {} из заказа  {}", itemId, orderId);
+        orderItemService.delete(orderId, itemId);
     }
 }
