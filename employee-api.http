@@ -1,4 +1,4 @@
-### Создать сотрудника (Ошибка 500)
+### Создать сотрудника (Ошибка 400)
 POST {{employeesPath}}
 Content-Type: application/json
 
@@ -68,7 +68,7 @@ Content-Type: application/json
 {
   "name": "Тест",
   "surname": "Тест",
-  "email": "vladimir@example.com",
+  "email": "Vladimir@example.com",
   "password": "securePa23",
   "role": "ADMIN"
 }

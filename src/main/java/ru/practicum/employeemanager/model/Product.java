@@ -20,19 +20,19 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    Long id;
+    private Long id;
 
     @EqualsAndHashCode.Include
     @NotBlank
     @Size(max = 255)
     @Column(name = "name", nullable = false)
-    String name;
+    private String name;
 
     @Size(max = 511)
     @Column(name = "description")
-    String description;
+    private String description;
 
     @NotNull
     @Column(name = "price", nullable = false)
-    BigDecimal price;
+    private BigDecimal price;
 }

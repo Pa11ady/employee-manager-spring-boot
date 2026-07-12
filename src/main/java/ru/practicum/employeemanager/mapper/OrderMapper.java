@@ -6,6 +6,7 @@ import org.mapstruct.MappingTarget;
 import ru.practicum.employeemanager.dto.OrderFullResponse;
 import ru.practicum.employeemanager.dto.OrderRequest;
 import ru.practicum.employeemanager.dto.OrderResponse;
+import ru.practicum.employeemanager.dto.UpdateOrderRequest;
 import ru.practicum.employeemanager.model.Order;
 
 @Mapper(componentModel = "spring",
@@ -28,5 +29,5 @@ public interface OrderMapper {
     @Mapping(target = "customer", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "items", ignore = true)
-    void updateEntityFromRequest(OrderRequest request, @MappingTarget Order order);
+    void updateEntityFromRequest(UpdateOrderRequest request, @MappingTarget Order order);
 }

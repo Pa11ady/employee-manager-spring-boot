@@ -61,6 +61,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void delete(long id) {
+        //fk_order_items_product_id ON DELETE RESTRICT глобальный обработчик исключения
         productRepository.delete(getProduct(id));
     }
 

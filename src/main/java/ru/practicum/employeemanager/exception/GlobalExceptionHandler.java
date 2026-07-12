@@ -61,6 +61,11 @@ public class GlobalExceptionHandler {
                     HttpStatus.CONFLICT.value(), "Товар уже существует в заказе",
                     LocalDateTime.now()
             );
+        } else if (message.contains("fk_order_items_product_id")) {
+            return new ErrorResponse(
+                    HttpStatus.CONFLICT.value(), "Нельзя удалить товар, который используется в заказе",
+                    LocalDateTime.now()
+            );
         }
         throw e;
     }

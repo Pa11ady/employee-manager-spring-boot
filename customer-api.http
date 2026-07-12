@@ -81,7 +81,7 @@ Content-Type: application/json
 {
   "name": "Другой",
   "surname": "Человек",
-  "email": "ivan.smirnov@mail.ru",
+  "email": "Ivan.smirnov@mail.ru",
   "phone": "+79999999999"
 }
 

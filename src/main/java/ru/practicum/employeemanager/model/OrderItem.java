@@ -34,5 +34,5 @@ public class OrderItem {
     // Предположим, что количество целое, хотя реальности бывает дробное
     @NotNull
     @Column(name = "quantity", nullable = false)
-    Integer quantity;
+    private Integer quantity;
 }

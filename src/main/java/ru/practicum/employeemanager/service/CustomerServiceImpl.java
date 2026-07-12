@@ -25,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public CustomerResponse create(CustomerRequest customerRequest) {
-        if (customerRepository.existsByEmail(customerRequest.email())) {
+        if (customerRepository.existsByEmail(customerRequest.email().toLowerCase())) {
             throw new EmailExistsException((customerRequest.email() + " существует"));
         }
         Customer customer = customerRepository.save(customerMapper.toEntity(customerRequest));
@@ -66,7 +66,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponse update(long id, CustomerRequest customerRequest) {
         Customer customer = getCustomer(id);
         //если email свободен подставляем текущий id для успешной проверки
-        Long existingId = customerRepository.findIdByEmail(customerRequest.email()).orElse(id);
+        Long existingId = customerRepository.findIdByEmail(customerRequest.email().toLowerCase()).orElse(id);
         if (id != existingId) {
             throw new EmailExistsException((customerRequest.email() + " существует"));
         }

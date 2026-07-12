@@ -38,14 +38,15 @@ public class OrderController {
     @GetMapping
     public Page<OrderResponse> getAll(
             @RequestParam(required = false) Status status, @RequestParam(required = false) Instant createdAt,
+            @RequestParam(required = false) Long productId,
             @PageableDefault(sort = "createdAt") Pageable pageable) {
         log.info("Получение всех заказов");
-        return orderService.findAll(status, createdAt, pageable);
+        return orderService.findAll(status, createdAt, productId, pageable);
     }
 
     @PutMapping("/{orderId}")
     public OrderResponse update(@PathVariable long orderId,
-                                @Valid @RequestBody OrderRequest orderRequest) {
+                                @Valid @RequestBody UpdateOrderRequest orderRequest) {
         log.info("Обновление заказа {} {}", orderId, orderRequest);
         return orderService.update(orderId, orderRequest);
     }

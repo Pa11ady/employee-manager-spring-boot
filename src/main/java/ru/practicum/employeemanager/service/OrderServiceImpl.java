@@ -1,5 +1,7 @@
 package ru.practicum.employeemanager.service;
 
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,11 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.employeemanager.dto.OrderFullResponse;
 import ru.practicum.employeemanager.dto.OrderRequest;
 import ru.practicum.employeemanager.dto.OrderResponse;
+import ru.practicum.employeemanager.dto.UpdateOrderRequest;
 import ru.practicum.employeemanager.exception.NotFoundException;
 import ru.practicum.employeemanager.mapper.OrderMapper;
-import ru.practicum.employeemanager.model.Customer;
-import ru.practicum.employeemanager.model.Order;
-import ru.practicum.employeemanager.model.Status;
+import ru.practicum.employeemanager.model.*;
 import ru.practicum.employeemanager.repository.CustomerRepository;
 import ru.practicum.employeemanager.repository.OrderRepository;
 
@@ -52,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<OrderResponse> findAll(Status status, Instant createdAt, Pageable pageable) {
+    public Page<OrderResponse> findAll(Status status, Instant createdAt, Long productId, Pageable pageable) {
         Specification<Order> spec = Specification.unrestricted();
 
         if (status != null) {
@@ -71,16 +72,25 @@ public class OrderServiceImpl implements OrderService {
             );
         }
 
+        if (productId != null) {
+            spec = spec.and((root, query, cb) -> {
+                Join<Order, OrderItem> itemJoin = root.join("items", JoinType.INNER);
+                Join<OrderItem, Product> productJoin = itemJoin.join("product", JoinType.INNER);
+                if (query != null) {
+                    query.distinct(true);
+                }
+                return cb.equal(productJoin.get("id"), productId);
+            });
+        }
+
         Page<Order> page = orderRepository.findAll(spec, pageable);
         return page.map(orderMapper::toResponse);
     }
 
     @Override
     @Transactional
-    public OrderResponse update(long id, OrderRequest orderRequest) {
+    public OrderResponse update(long id, UpdateOrderRequest orderRequest) {
         Order order = getOrder(id);
-        Customer customer = getCustomer(orderRequest.customerId());
-        order.setCustomer(customer);
         orderMapper.updateEntityFromRequest(orderRequest, order);
         return orderMapper.toResponse(order);
     }

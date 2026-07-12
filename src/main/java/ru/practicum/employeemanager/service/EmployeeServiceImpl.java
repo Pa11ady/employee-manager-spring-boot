@@ -24,7 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional
     public EmployeeResponse create(EmployeeRequest employeeRequest) {
-        if (employeeRepository.existsByEmail(employeeRequest.email())) {
+        if (employeeRepository.existsByEmail(employeeRequest.email().toLowerCase())) {
             throw new EmailExistsException((employeeRequest.email() + " существует"));
         }
         Employee employee = employeeRepository.save(employeeMapper.toEntity(employeeRequest));
@@ -64,7 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponse update(long id, EmployeeRequest employeeRequest) {
         Employee employee = getEmployee(id);
         //если email свободен подставляем текущий id для успешной проверки
-        Long existingId = employeeRepository.findIdByEmail(employeeRequest.email()).orElse(id);
+        Long existingId = employeeRepository.findIdByEmail(employeeRequest.email().toLowerCase()).orElse(id);
         if (id != existingId) {
             throw new EmailExistsException((employeeRequest.email() + " существует"));
         }

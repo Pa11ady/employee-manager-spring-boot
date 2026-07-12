@@ -77,6 +77,9 @@ GET {{ordersPath}}/100500
 ### Получить все заказы
 GET {{ordersPath}}
 
+### Получить заказы фильтр по товару  9
+GET {{ordersPath}}?productId=9
+
 ### Получить заказы фильтр по статусу NEW
 GET {{ordersPath}}?status=NEW
 
@@ -112,8 +115,7 @@ PUT {{ordersPath}}/1
 Content-Type: application/json
 
 {
-  "status": "PROCESSING",
-  "customerId": 1
+  "status": "PROCESSING"
 }
 
 ### Обновить заказ (сменить статус на COMPLETED)
@@ -121,8 +123,7 @@ PUT {{ordersPath}}/1
 Content-Type: application/json
 
 {
-  "status": "COMPLETED",
-  "customerId": 1
+  "status": "COMPLETED"
 }
 
 ### Обновить заказ (сменить статус на CANCELED)
@@ -130,18 +131,9 @@ PUT {{ordersPath}}/2
 Content-Type: application/json
 
 {
-  "status": "CANCELED",
-  "customerId": 1
+  "status": "CANCELED"
 }
 
-### Обновить заказ (изменить клиента)
-PUT {{ordersPath}}/3
-Content-Type: application/json
-
-{
-  "status": "NEW",
-  "customerId": 3
-}
 
 ### Обновить заказ (Не успех) — заказ не существует
 PUT {{ordersPath}}/100500
@@ -165,8 +157,7 @@ PUT {{ordersPath}}/1
 Content-Type: application/json
 
 {
-  "status": "INVALID",
-  "customerId": 1
+  "status": "INVALID"
 }
 
 ### Удалить заказ
