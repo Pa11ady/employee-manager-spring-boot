@@ -1,6 +1,8 @@
 package ru.practicum.employeemanager.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -36,9 +38,35 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleThrowable(Throwable e) {
-        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Произошла непредвиденная ошибка. " + e.getMessage(), LocalDateTime.now());
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleJsonParseError(HttpMessageNotReadableException ignoredE) {
+        return new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Некорректный формат запроса. Проверьте типы данных.",
+                LocalDateTime.now()
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleDataIntegrityViolation(DataIntegrityViolationException e) {
+        String message = e.getMostSpecificCause().getMessage();
+        if (message.contains("uc_product_name")) {
+            return new ErrorResponse(
+                    HttpStatus.CONFLICT.value(), "Название товара уже существует",
+                    LocalDateTime.now()
+            );
+        } else if (message.contains("uc_order_product")) {
+            return new ErrorResponse(
+                    HttpStatus.CONFLICT.value(), "Товар уже существует в заказе",
+                    LocalDateTime.now()
+            );
+        } else if (message.contains("fk_order_items_product_id")) {
+            return new ErrorResponse(
+                    HttpStatus.CONFLICT.value(), "Нельзя удалить товар, который используется в заказе",
+                    LocalDateTime.now()
+            );
+        }
+        throw e;
     }
 }

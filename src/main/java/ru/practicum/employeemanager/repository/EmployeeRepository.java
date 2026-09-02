@@ -1,20 +1,16 @@
 package ru.practicum.employeemanager.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import ru.practicum.employeemanager.model.Employee;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface EmployeeRepository {
-    Employee create(Employee employee);
+public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSpecificationExecutor<Employee> {
 
-    Optional<Employee> findById(Long id);
-
-    List<Employee> findAll();
-
-    Employee update(Employee employee);
-
-    void delete(Long id);
-
+    @Query("SELECT e.id FROM Employee e WHERE e.email = :email")
     Optional<Long> findIdByEmail(String email);
+
+    boolean existsByEmail(String email);
 }

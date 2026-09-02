@@ -1,0 +1,311 @@
+### Создать заказ (Успех)
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "NEW",
+  "customerId": 1
+}
+
+### Создать заказ 2
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "PROCESSING",
+  "customerId": 1
+}
+
+### Создать заказ 3
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "COMPLETED",
+  "customerId": 2
+}
+
+### Создать заказ 4
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "CANCELED",
+  "customerId": 2
+}
+
+### Создать заказ (ошибка валидации 400) — не указан status
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "customerId": 1
+}
+
+### Создать заказ (ошибка валидации 400) — не указан customerId
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "NEW"
+}
+
+### Создать заказ (ошибка 400) — некорректный статус
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "UNKNOWN_STATUS",
+  "customerId": 1
+}
+
+### Создать заказ (ошибка 404) — клиент не существует
+POST {{ordersPath}}
+Content-Type: application/json
+
+{
+  "status": "NEW",
+  "customerId": 100500
+}
+
+### Получить заказ по ID
+GET {{ordersPath}}/1
+
+### Получить заказ по ID (Не успех)
+GET {{ordersPath}}/100500
+
+### Получить все заказы
+GET {{ordersPath}}
+
+### Получить заказы фильтр по товару  9
+GET {{ordersPath}}?productId=9
+
+### Получить заказы фильтр по статусу NEW
+GET {{ordersPath}}?status=NEW
+
+### Получить заказы фильтр по статусу PROCESSING
+GET {{ordersPath}}?status=PROCESSING
+
+### Получить заказы фильтр по статусу COMPLETED
+GET {{ordersPath}}?status=COMPLETED
+
+### Получить заказы фильтр по статусу CANCELED
+GET {{ordersPath}}?status=CANCELED
+
+### Получить заказы фильтр по дате в UTC
+GET {{ordersPath}}?createdAt=2026-01-15T10:30:00Z
+
+### Получить заказы фильтры + пагинация
+GET {{ordersPath}}?status=NEW&createdAt=2026-01-15T10:30:00Z&page=0&size=5&sort=id,asc
+
+### Получить все заказы пагинация 1
+GET {{ordersPath}}/?page=0&size=2&sort=id
+
+### Получить все заказы пагинация 2
+GET {{ordersPath}}/?page=1&size=2&sort=id,desc
+
+### Получить все заказы пагинация 3
+GET {{ordersPath}}/?page=2&size=1
+
+### Получить все заказы сортировка по дате создания
+GET {{ordersPath}}/?sort=createdAt,desc
+
+### Обновить заказ (сменить статус на PROCESSING)
+PUT {{ordersPath}}/1
+Content-Type: application/json
+
+{
+  "status": "PROCESSING"
+}
+
+### Обновить заказ (сменить статус на COMPLETED)
+PUT {{ordersPath}}/1
+Content-Type: application/json
+
+{
+  "status": "COMPLETED"
+}
+
+### Обновить заказ (сменить статус на CANCELED)
+PUT {{ordersPath}}/2
+Content-Type: application/json
+
+{
+  "status": "CANCELED"
+}
+
+
+### Обновить заказ (Не успех) — заказ не существует
+PUT {{ordersPath}}/100500
+Content-Type: application/json
+
+{
+  "status": "NEW",
+  "customerId": 1
+}
+
+### Обновить заказ (ошибка валидации 400) — не указан status
+PUT {{ordersPath}}/1
+Content-Type: application/json
+
+{
+  "customerId": 1
+}
+
+### Обновить заказ (ошибка 400) — некорректный статус
+PUT {{ordersPath}}/1
+Content-Type: application/json
+
+{
+  "status": "INVALID"
+}
+
+### Удалить заказ
+DELETE {{ordersPath}}/1
+
+### Удалить заказ (Не успех) — уже удалён или не существовал
+DELETE {{ordersPath}}/1
+
+# ========================================================
+# ==================== ORDER ITEMS =======================
+# ========================================================
+
+### Добавить товар в заказ 1 (Успех) — товар 2 (Ноутбук)
+POST {{ordersPath}}/1/items
+Content-Type: application/json
+
+{
+  "productId": 2,
+  "quantity": 2
+}
+
+### Добавить товар в заказ 1 (Успех) — товар 5 (Книга)
+POST {{ordersPath}}/1/items
+Content-Type: application/json
+
+{
+  "productId": 5,
+  "quantity": 3
+}
+
+### Добавить товар (ошибка 409) — товар 1 уже есть в заказе 1
+POST {{ordersPath}}/1/items
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 5
+}
+
+### Добавить товар (ошибка 409) — товар 3 уже есть в заказе 1
+POST {{ordersPath}}/1/items
+Content-Type: application/json
+
+{
+  "productId": 3,
+  "quantity": 2
+}
+
+### Добавить товар (ошибка 404) — заказ не существует
+POST {{ordersPath}}/100500/items
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 2
+}
+
+### Добавить товар (ошибка 404) — товар не существует
+POST {{ordersPath}}/1/items
+Content-Type: application/json
+
+{
+  "productId": 100500,
+  "quantity": 2
+}
+
+### Добавить товар (ошибка 400) — не указан productId
+POST {{ordersPath}}/1/items
+Content-Type: application/json
+
+{
+  "quantity": 2
+}
+
+### Добавить товар (ошибка 400) — количество <= 0
+POST {{ordersPath}}/1/items
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 0
+}
+
+### Добавить товар (ошибка 400) — количество отрицательное
+POST {{ordersPath}}/1/items
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": -5
+}
+
+### Обновить товар в заказе 1 (Успех) — изменить количество товара 1 (itemId=1)
+PUT {{ordersPath}}/1/items/1
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 10
+}
+
+### Обновить товар в заказе 1 (Успех) — изменить товар (itemId=2, был товар 3, станет товар 6)
+PUT {{ordersPath}}/1/items/2
+Content-Type: application/json
+
+{
+  "productId": 6,
+  "quantity": 5
+}
+
+### Обновить товар (ошибка 404) — заказ не существует
+PUT {{ordersPath}}/100500/items/1
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 2
+}
+
+### Обновить товар (ошибка 404) — itemId не существует
+PUT {{ordersPath}}/1/items/100500
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 2
+}
+
+### Обновить товар (ошибка 404) — itemId принадлежит другому заказу (itemId=4 из заказа 2)
+PUT {{ordersPath}}/1/items/4
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 2
+}
+
+### Удалить товар из заказа 1 (Успех) — itemId=3 (товар 4)
+DELETE {{ordersPath}}/1/items/3
+
+### Удалить товар (ошибка 404) — уже удалён
+DELETE {{ordersPath}}/1/items/3
+
+### Удалить товар (ошибка 404) — заказ не существует
+DELETE {{ordersPath}}/100500/items/2
+
+### Удалить товар (ошибка 404) — itemId не существует
+DELETE {{ordersPath}}/1/items/100500
+
+### Удалить товар (ошибка 404) — itemId принадлежит другому заказу (itemId=5 из заказа 2)
+DELETE {{ordersPath}}/1/items/5

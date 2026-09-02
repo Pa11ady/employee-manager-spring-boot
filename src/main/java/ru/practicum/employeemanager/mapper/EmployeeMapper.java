@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper {
 
+    @Mapping(target = "id", ignore = true)
     Employee toEntity(EmployeeRequest request);
 
     EmployeeResponse toResponse(Employee employee);
