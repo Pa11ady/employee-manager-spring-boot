@@ -27,7 +27,8 @@ public class ProductController {
     @Operation(summary = "Создать новый товар")
     @PostMapping
     public ProductResponse create(@Valid @RequestBody ProductRequest productRequest) {
-        log.info("Добавление товара {}", productRequest);
+        log.info("Создание нового товара");
+        log.debug("Данные запроса на создание товара: {}", productRequest);
         return productService.create(productRequest);
     }
 
@@ -36,7 +37,7 @@ public class ProductController {
     public ProductResponse get(
             @Parameter(description = "Уникальный идентификатор товара", example = "1")
             @PathVariable Long productId) {
-        log.info("Получение товара по id {}", productId);
+        log.info("Получение товара по ID: {}", productId);
         return productService.findById(productId);
     }
 
@@ -54,7 +55,9 @@ public class ProductController {
 
             @Parameter(description = "Параметры пагинации и сортировки (page, size, sort)")
             @PageableDefault(sort = {"name", "price"}) Pageable pageable) {
-        log.info("Получение всех товаров");
+        log.info("Получение списка товаров");
+        log.debug("Фильтры: name='{}', minPrice={}, maxPrice={}, pageable={}",
+                name, minPrice, maxPrice, pageable);
         return productService.findAll(name, minPrice, maxPrice, pageable);
     }
 
@@ -64,7 +67,8 @@ public class ProductController {
             @Parameter(description = "Уникальный идентификатор товара", example = "1")
             @PathVariable Long productId,
             @Valid @RequestBody ProductRequest productRequest) {
-        log.info("Обновление товара {} {}", productId, productRequest);
+        log.info("Обновление товара ID={}", productId);
+        log.debug("Данные запроса на обновление товара: {}", productRequest);
         return productService.update(productId, productRequest);
     }
 
@@ -73,7 +77,7 @@ public class ProductController {
     public void delete(
             @Parameter(description = "Уникальный идентификатор товара", example = "1")
             @PathVariable Long productId) {
-        log.info("Удаление товара по id {}", productId);
+        log.info("Удаление товара по ID: {}", productId);
         productService.delete(productId);
     }
 }

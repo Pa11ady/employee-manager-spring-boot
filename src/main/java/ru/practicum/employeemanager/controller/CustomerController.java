@@ -26,7 +26,8 @@ public class CustomerController {
     @Operation(summary = "Создать нового клиента")
     @PostMapping
     public CustomerResponse create(@Valid @RequestBody CustomerRequest customerRequest) {
-        log.info("Добавление клиента {}", customerRequest);
+        log.info("Создание нового клиента");
+        log.debug("Данные запроса на создание: {}", customerRequest);
         return customerService.create(customerRequest);
     }
 
@@ -57,7 +58,8 @@ public class CustomerController {
 
             @Parameter(description = "Параметры пагинации и сортировки (page, size, sort)")
             @PageableDefault(sort = "name") Pageable pageable) {
-        log.info("Получение всех клиентов");
+        log.info("Запрос списка клиентов: name='{}', surname='{}', email='{}', phone='{}', pageable={}",
+                name, surname, email, phone, pageable);
         return customerService.findAll(name, surname, email, phone, pageable);
     }
 
@@ -67,7 +69,8 @@ public class CustomerController {
             @Parameter(description = "Уникальный идентификатор клиента", example = "123")
             @PathVariable long customerId,
             @Valid @RequestBody CustomerRequest customerRequest) {
-        log.info("Обновление клиента {} {}", customerId, customerRequest);
+        log.info("Обновление клиента с ID: {}", customerId);
+        log.debug("Данные запроса на обновление: {}", customerRequest);
         return customerService.update(customerId, customerRequest);
     }
 

@@ -25,7 +25,10 @@ public class EmployeeController {
     @Operation(summary = "Создать нового сотрудника")
     @PostMapping
     public EmployeeResponse create(@Valid @RequestBody EmployeeRequest employeeRequest) {
-        log.info("Добавление сотрудника {}", employeeRequest);
+        log.info("Добавление сотрудника: name='{}', surname='{}', role={}",
+                employeeRequest.name(), employeeRequest.surname(), employeeRequest.role());
+        log.debug("Контактные данные для создания: email='{}', phone='{}'",
+                employeeRequest.email(), employeeRequest.phone());
         return employeeService.create(employeeRequest);
     }
 
@@ -56,6 +59,8 @@ public class EmployeeController {
             @Parameter(description = "Параметры пагинации и сортировки (page, size, sort)")
             @PageableDefault(sort = "name") Pageable pageable) {
         log.info("Получение всех сотрудников");
+        log.debug("Фильтры: name='{}', surname='{}', email='{}', phone='{}', pageable={}",
+                name, surname, email, phone, pageable);
         return employeeService.findAll(name, surname, email, phone, pageable);
     }
 
@@ -65,7 +70,10 @@ public class EmployeeController {
             @Parameter(description = "Уникальный идентификатор сотрудника", example = "123")
             @PathVariable long employeeId,
             @Valid @RequestBody EmployeeRequest employeeRequest) {
-        log.info("Обновление сотрудника {} {}", employeeId, employeeRequest);
+        log.info("Обновление сотрудника ID={}: name='{}', surname='{}', role={}",
+                employeeId, employeeRequest.name(), employeeRequest.surname(), employeeRequest.role());
+        log.debug("Обновляемые контактные данные: email='{}', phone='{}'",
+                employeeRequest.email(), employeeRequest.phone());
         return employeeService.update(employeeId, employeeRequest);
     }
 
@@ -74,7 +82,7 @@ public class EmployeeController {
     public void delete(
             @Parameter(description = "Уникальный идентификатор сотрудника", example = "123")
             @PathVariable long employeeId) {
-        log.info("Удаление сотрудника по id {}", employeeId);
+        log.info("Удаление сотрудника по ID: {}", employeeId);
         employeeService.delete(employeeId);
     }
 }

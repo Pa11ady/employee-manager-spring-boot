@@ -30,7 +30,8 @@ public class OrderController {
     @Operation(summary = "Создать новый заказ")
     @PostMapping
     public OrderResponse create(@Valid @RequestBody OrderRequest orderRequest) {
-        log.info("Добавление заказа {}", orderRequest);
+        log.info("Добавление заказа");
+        log.debug("Данные запроса на добавления заказа: {}", orderRequest);
         return orderService.create(orderRequest);
     }
 
@@ -57,7 +58,9 @@ public class OrderController {
 
             @Parameter(description = "Параметры пагинации и сортировки (page, size, sort)")
             @PageableDefault(sort = "createdAt") Pageable pageable) {
-        log.info("Получение всех заказов");
+        log.info("Получение списка заказов");
+        log.debug("Фильтры: status={}, createdAt={}, productId={}, pageable={}",
+                status, createdAt, productId, pageable);
         return orderService.findAll(status, createdAt, productId, pageable);
     }
 
@@ -67,7 +70,8 @@ public class OrderController {
             @Parameter(description = "Уникальный идентификатор заказа", example = "1")
             @PathVariable long orderId,
             @Valid @RequestBody UpdateOrderRequest orderRequest) {
-        log.info("Обновление заказа {} {}", orderId, orderRequest);
+        log.info("Обновление заказа ID={}", orderId);
+        log.debug("Данные запроса на обновление заказа: {}", orderRequest);
         return orderService.update(orderId, orderRequest);
     }
 
@@ -76,7 +80,7 @@ public class OrderController {
     public void delete(
             @Parameter(description = "Уникальный идентификатор заказа", example = "1")
             @PathVariable long orderId) {
-        log.info("Удаление заказа по id {}", orderId);
+        log.info("Удаление заказа по ID {}", orderId);
         orderService.delete(orderId);
     }
 
@@ -86,7 +90,8 @@ public class OrderController {
             @Parameter(description = "Уникальный идентификатор заказа", example = "1")
             @PathVariable long orderId,
             @Valid @RequestBody OrderItemRequest orderItemRequest) {
-        log.info("Добавление товара {} {}", orderId, orderItemRequest);
+        log.info("Добавление позиции в заказ ID={}", orderId);
+        log.debug("Данные добавляемой позиции: {}", orderItemRequest);
         return orderItemService.create(orderId, orderItemRequest);
     }
 
@@ -98,7 +103,8 @@ public class OrderController {
             @Parameter(description = "Уникальный идентификатор позиции (товара) в заказе", example = "10")
             @PathVariable long itemId,
             @Valid @RequestBody OrderItemRequest orderItemRequest) {
-        log.info("Обновление товара {} {}", itemId, orderItemRequest);
+        log.info("Обновление позиции ID={} в заказе ID={}", itemId, orderId);
+        log.debug("Данные обновляемой позиции: {}", orderItemRequest);
         return orderItemService.update(orderId, itemId, orderItemRequest);
     }
 
