@@ -1,6 +1,8 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
+    # URL базы данных для локальной разработки.
+    # При запуске в Docker это значение переопределяется через переменные окружения в docker-compose.yml
     url: jdbc:postgresql://localhost:5432/employee_db
     username: root
     password: root
