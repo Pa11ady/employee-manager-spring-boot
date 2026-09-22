@@ -6,7 +6,7 @@ import ru.practicum.employeemanager.model.Status;
 
 @Schema(description = "Данные для обновления заказа (изменение статуса)")
 public record UpdateOrderRequest(
-        @Schema(description = "Новый статус заказа", example = "IN_PROGRESS")
+        @Schema(description = "Новый статус заказа", example = "PROCESSING")
         @NotNull
         Status status
 ) {

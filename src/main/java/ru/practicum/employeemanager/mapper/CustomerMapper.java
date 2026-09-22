@@ -21,5 +21,4 @@ public interface CustomerMapper {
     @Mapping(target = "orders", ignore = true)
     void updateEntityFromRequest(CustomerRequest request, @MappingTarget Customer customer);
 
-    //List<CustomerResponse> toResponseList(List<Customer> customers);
 }
