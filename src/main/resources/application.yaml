@@ -11,3 +11,8 @@ spring:
       hibernate:
         jdbc:
           batch_size: 20
+
+springdoc:
+  swagger-ui:
+    tags-sorter: alpha
+    operations-sorter: alpha

@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  em-service:
+    build: .
+    container_name: em-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      em-db:
+        condition: service_healthy  # Ждемс
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://em-db:5432/employee_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    restart: unless-stopped
+
+  em-db:
+    image: postgres:17-alpine
+    container_name: em-db
+    ports:
+      - "6541:5432"
+    environment:
+      - POSTGRES_DB=employee_db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - em-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d employee_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  em-db-data:

@@ -53,6 +53,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponse update(long id, ProductRequest productRequest) {
         Product product = getProduct(id);
         productMapper.updateEntityFromRequest(productRequest, product);
@@ -60,6 +61,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void delete(long id) {
         //fk_order_items_product_id ON DELETE RESTRICT глобальный обработчик исключения
         productRepository.delete(getProduct(id));
