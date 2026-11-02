@@ -1,0 +1,21 @@
+spring:
+  flyway:
+    enabled: true
+    # Применяем только основные миграции
+    locations: classpath:db/migration/common
+    clean-disabled: true
+    baseline-on-migrate: true
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.SQL: DEBUG
